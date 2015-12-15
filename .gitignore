@@ -1,2 +1,8 @@
 bench
 bench.exe
+Release/
+Debug/
+*.sdf
+*.opensdf
+*.suo
+*.user
