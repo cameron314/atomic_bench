@@ -6,6 +6,10 @@
 #include <thread>
 #include <cstdint>
 
+#ifdef __APPLE__
+#include <pthread.h>
+#endif
+
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -88,6 +92,17 @@ int main(int argc, char** argv)
 	printf("ghetto_thread_id() takes %.4fns on average\n",
 		moodycamel::microbench(
 		[&]() { ghettoId += ghetto_thread_id(); },
+			1000000,
+			50
+		) * 1000 * 1000
+	);
+#endif
+
+#ifdef __APPLE__
+	volatile mach_port_t machId = 0;
+	printf("pthread_mach_thread_np(pthread_self()) takes %.4fns on average\n",
+		moodycamel::microbench(
+		[&]() { machId = pthread_mach_thread_np(pthread_self()); },
 			1000000,
 			50
 		) * 1000 * 1000
