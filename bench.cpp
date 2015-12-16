@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 	
 	printf("32-bit CAS takes %.4fns on average\n",
 		moodycamel::microbench(
-			[&]() { x32.compare_exchange_strong(y32, z32, std::memory_order_acq_rel); },
+			[&]() { x32.compare_exchange_strong(y32, z32, std::memory_order_acq_rel, std::memory_order_acquire); },
 			1000000, /* iterations per test run */
 			50 /* number of test runs */
 		) * 1000 * 1000    // ms -> ns
@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 	
 	printf("64-bit CAS takes %.4fns on average\n",
 		moodycamel::microbench(
-			[&]() { x64.compare_exchange_strong(y64, z64, std::memory_order_acq_rel); },
+			[&]() { x64.compare_exchange_strong(y64, z64, std::memory_order_acq_rel, std::memory_order_acquire); },
 			1000000,
 			50
 		) * 1000 * 1000
